@@ -1,27 +1,147 @@
 {
-"$schema": "http://json-schema.org/draft-04/schema#",
-"title": "Product",
-"description": "A product from Acme's catalog",
-"type": "object",
-
-"properties": {
-
-"id": {
-"description": "The unique identifier for a product",
-"type": "integer"
-},
-
-"name": {
-"description": "Name of the product",
-"type": "string"
-},
-
-"price": {
-"type": "number",
-"minimum": 0,
-"exclusiveMinimum": true
-}
-},
-
-"required": ["id", "name", "price"]
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "Sense",
+	"description": "Qlik Sense Engine API structs",
+	"type": "object",
+	"definitions":
+	{
+		"NxInlineMeasureDef":
+		{
+			"properties":
+			{
+				"qLabel":
+				{
+					"description": "Name of the measure.",
+					"type": "string"
+				},
+				"qDescription":
+				{
+					"description": "Description of the measure",
+					"type": "string"
+				},
+				"qDef":
+				{
+					"description": "Definition of the expression in the measure.\n Example: Sum (OrderTotal)",
+					"type": "string"
+				},
+				"qRelative":
+				{
+					"description": "If set to true, percentage values are returned instead of absolute numbers",
+					"type": "boolean"
+				},
+				"qBrutalSum":
+				{
+					"description": "If set to true, the sum of rows total should be used rather than real expression total",
+					"type": "boolean"
+				},
+				"qAggrFunc":
+				{
+					"description": "Aggregate function. The default value is 0 (Sum of rows)",
+					"type": "string"
+				},
+				"qAccumulate":
+				{
+					"description": "0 means no accumulation\n1 means full accumulation (each y-value accumulates all previous y-values of the expression)\n≥ 2 means accumulate as many steps as the qAccumulate value",
+					"type": "integer"
+				},
+				"qReverseSort":
+				{
+					"description": "If set to true, it inverts the sort criteria in the field",
+					"type": "boolean"
+				},
+				"qActiveExpression":
+				{
+					"description": "Index of the active expression in a cyclic measure. The indexing starts from 0.",
+					"type": "integer"
+				},
+				"qExpressions":
+				{
+					"description": "If set to true, it inverts the sort criteria in the field",
+					"type": "array",
+					"items":
+					{
+						"type": "string"
+					},
+					"uniqueItems": true
+				},
+				"qTags":
+				{
+					"type": "array",
+					"items":
+					{
+						"type": "string"
+					},
+					"uniqueItems": true
+				}
+			},
+			"required":
+			[
+				"qDef"
+			]
+		},
+		"NxMeasure":
+		{
+			"properties":
+			{
+				"qLibraryId":
+				{
+					"description": "Refers to a measure stored in the library",
+					"type": "string"
+				},
+				"qDef":
+				{
+					"description": "Definition of the expression in the measure.\n Example: Sum (OrderTotal)",
+					"$ref": "#/definitions/NxInlineMeasureDef"
+				},
+				"qAttributeExpressions":
+				{
+					"type": "array",
+					"items":
+					{
+						"$ref": "#/definitions/NxAttrExprDef"
+					},
+					"uniqueItems": true
+				},
+				"qCalcCond":
+				{
+					"description": "Specifies a calculation condition, which must be fulfilled for the measure to be calculated",
+					"$ref": "#/definitions/NxValueExpr"
+				}
+			},
+			"required":
+			[
+				"qDef"
+			]
+		},
+		"NxAttrExprDef":
+		{
+			"properties":
+			{
+				"qExpression":
+				{
+					"description": "Definition of the attribute expression. Example: Max(OrderID)",
+					"type": "string"
+				}
+			},
+			"required":
+			[
+				"qExpression"
+			]
+		},
+		"NxValueExpr":
+		{
+			"properties":
+			{
+				"qv":
+				{
+					"description": "Expression returning numbrt value",
+					"type": "string"
+				}
+			},
+			"required":
+			[
+				"qExpression"
+			]
+		}
+	}
 }

@@ -1,3 +1,6 @@
+
+
 main(List<String> args) {
-  print('Hello world!');
+  print(new Uri.file('C:/Projects/dogma_start/lib/models.dart'));
+
 }
